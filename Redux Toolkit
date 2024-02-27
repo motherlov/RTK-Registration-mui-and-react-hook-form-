@@ -1,0 +1,37 @@
+// RegistrationForm.js
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { TextField, Button } from '@mui/material';
+import { registerUser } from './registrationSlice';
+
+const RegistrationForm = () => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('image', data.image[0]); // Assuming only one image is allowed
+
+    dispatch(registerUser(formData));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <TextField label="Name" {...register('name', { required: true })} />
+      {errors.name && <span>Name is required</span>}
+      <TextField label="Email" {...register('email', { required: true })} />
+      {errors.email && <span>Email is required</span>}
+      <TextField label="Password" type="password" {...register('password', { required: true })} />
+      {errors.password && <span>Password is required</span>}
+      <input type="file" {...register('image', { required: true })} />
+      {errors.image && <span>Image is required</span>}
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+};
+
+export default RegistrationForm;
