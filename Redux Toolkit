@@ -1,4 +1,12 @@
-// RegistrationForm.js
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+// RegistrationForm.js     // mui and React-hook-form
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -35,3 +43,262 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+// RegistrationForm.js
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Button, TextField } from '@mui/material';
+import { registerUser } from './registrationSlice';
+
+const RegistrationForm = () => {
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [gender, setGender] = useState('');
+  const [address, setAddress] = useState('');
+  const [country, setCountry] = useState('');
+  const [image, setImage] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('mobile', mobile);
+    formData.append('dateOfBirth', dateOfBirth);
+    formData.append('gender', gender);
+    formData.append('address', address);
+    formData.append('country', country);
+    formData.append('image', image);
+
+    dispatch(registerUser(formData));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        label="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <TextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <TextField
+        label="Mobile"
+        value={mobile}
+        onChange={(e) => setMobile(e.target.value)}
+        required
+      />
+      <TextField
+        label="Date of Birth"
+        type="date"
+        value={dateOfBirth}
+        onChange={(e) => setDateOfBirth(e.target.value)}
+        required
+      />
+      <TextField
+        label="Gender"
+        value={gender}
+        onChange={(e) => setGender(e.target.value)}
+        required
+      />
+      <TextField
+        label="Address"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        required
+      />
+      <TextField
+        label="Country"
+        value={country}
+        onChange={(e) => setCountry(e.target.value)}
+        required
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files[0])}
+        required
+      />
+      <Button type="submit">Register</Button>
+    </form>
+  );
+};
+
+export default RegistrationForm;
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// RegistrationForm.js
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Button, TextField } from '@mui/material';
+import { registerUser } from './registrationSlice';
+
+const RegistrationForm = () => {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [image, setImage] = useState(null);
+
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleImageChange = (e) => setImage(e.target.files[0]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('image', image);
+
+    dispatch(registerUser(formData));
+// dispatch(registerUser({email,password,image}));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={handleEmailChange}
+        required
+      />
+      <TextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={handlePasswordChange}
+        required
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        required
+      />
+      <Button type="submit">Register</Button>
+    </form>
+  );
+};
+
+export default RegistrationForm;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+// RegistrationForm.js
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { TextField, Button } from '@mui/material';
+import { registerUser } from './registrationSlice';
+
+const RegistrationForm = () => {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    image: null,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleImageChange = (e) => {  //  very good formula 
+    setFormData({
+      ...formData,
+      image: e.target.files[0],
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append('email', formData.email);
+    data.append('password', formData.password);
+    data.append('image', formData.image);
+
+    dispatch(registerUser(data));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        label="Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Password"
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        required
+      />
+      <Button type="submit">Register</Button>
+    </form>
+  );
+};
+
+export default RegistrationForm;
+
